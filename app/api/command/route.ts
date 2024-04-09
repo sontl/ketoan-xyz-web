@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     })
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4-1106-preview",
+      model: "claude-3-haiku-20240307",
       messages: [
         {
           role: "system",

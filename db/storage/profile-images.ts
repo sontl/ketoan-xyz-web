@@ -10,7 +10,7 @@ export const uploadProfileImage = async (
   const imageSizeLimit = 2000000 // 2MB
 
   if (image.size > imageSizeLimit) {
-    throw new Error(`Image must be less than ${imageSizeLimit / 1000000}MB`)
+    throw new Error(`Kích thước ảnh phải nhỏ hơn ${imageSizeLimit / 1000000}MB`)
   }
 
   const currentPath = profile.image_path
@@ -22,7 +22,7 @@ export const uploadProfileImage = async (
       .remove([currentPath])
 
     if (deleteError) {
-      throw new Error("Error deleting old image")
+      throw new Error("Lỗi khi xoá ảnh cũ")
     }
   }
 
@@ -33,7 +33,7 @@ export const uploadProfileImage = async (
     })
 
   if (error) {
-    throw new Error("Error uploading image")
+    throw new Error("Lỗi khi tải ảnh lên")
   }
 
   const { data: getPublicUrlData } = supabase.storage

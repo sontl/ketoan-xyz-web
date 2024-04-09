@@ -259,7 +259,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
       if (!usernameRegex.test(username)) {
         setUsernameAvailable(false)
         alert(
-          "Username must be letters, numbers, or underscores only - no other characters or spacing allowed."
+          "Tên người dùng chỉ được chứa các chữ cái, số, hoặc dấu gạch dưới - không được có ký tự hoặc khoảng trắng khác."
         )
         return
       }
@@ -319,7 +319,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
         <div className="grow overflow-auto">
           <SheetHeader>
             <SheetTitle className="flex items-center justify-between space-x-2">
-              <div>User Settings</div>
+              <div>Thiết lập tài khoản</div>
 
               <Button
                 tabIndex={-1}
@@ -328,109 +328,106 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                 onClick={handleSignOut}
               >
                 <IconLogout className="mr-1" size={20} />
-                Logout
+                Đăng xuất
               </Button>
             </SheetTitle>
           </SheetHeader>
 
-          <Tabs defaultValue="profile">
+          {/* <Tabs defaultValue="profile">
             <TabsList className="mt-4 grid w-full grid-cols-2">
               <TabsTrigger value="profile">Profile</TabsTrigger>
               <TabsTrigger value="keys">API Keys</TabsTrigger>
             </TabsList>
 
-            <TabsContent className="mt-4 space-y-4" value="profile">
-              <div className="space-y-1">
-                <div className="flex items-center space-x-2">
-                  <Label>Username</Label>
+            <TabsContent className="mt-4 space-y-4" value="profile"> */}
+          <div className="mt-4 space-y-1">
+            <div className="flex items-center space-x-2">
+              <Label>Tên đăng nhập</Label>
 
-                  <div className="text-xs">
-                    {username !== profile.username ? (
-                      usernameAvailable ? (
-                        <div className="text-green-500">AVAILABLE</div>
-                      ) : (
-                        <div className="text-red-500">UNAVAILABLE</div>
-                      )
-                    ) : null}
-                  </div>
+              <div className="text-xs">
+                {username !== profile.username ? (
+                  usernameAvailable ? (
+                    <div className="text-green-500">AVAILABLE</div>
+                  ) : (
+                    <div className="text-red-500">UNAVAILABLE</div>
+                  )
+                ) : null}
+              </div>
+            </div>
+
+            <div className="relative">
+              <Input
+                className="pr-10"
+                placeholder="Username..."
+                value={username}
+                onChange={e => {
+                  setUsername(e.target.value)
+                  checkUsernameAvailability(e.target.value)
+                }}
+                minLength={PROFILE_USERNAME_MIN}
+                maxLength={PROFILE_USERNAME_MAX}
+              />
+
+              {username !== profile.username ? (
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3">
+                  {loadingUsername ? (
+                    <IconLoader2 className="animate-spin" />
+                  ) : usernameAvailable ? (
+                    <IconCircleCheckFilled className="text-green-500" />
+                  ) : (
+                    <IconCircleXFilled className="text-red-500" />
+                  )}
                 </div>
+              ) : null}
+            </div>
 
-                <div className="relative">
-                  <Input
-                    className="pr-10"
-                    placeholder="Username..."
-                    value={username}
-                    onChange={e => {
-                      setUsername(e.target.value)
-                      checkUsernameAvailability(e.target.value)
-                    }}
-                    minLength={PROFILE_USERNAME_MIN}
-                    maxLength={PROFILE_USERNAME_MAX}
-                  />
+            <LimitDisplay used={username.length} limit={PROFILE_USERNAME_MAX} />
+          </div>
 
-                  {username !== profile.username ? (
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                      {loadingUsername ? (
-                        <IconLoader2 className="animate-spin" />
-                      ) : usernameAvailable ? (
-                        <IconCircleCheckFilled className="text-green-500" />
-                      ) : (
-                        <IconCircleXFilled className="text-red-500" />
-                      )}
-                    </div>
-                  ) : null}
-                </div>
+          <div className="space-y-1">
+            <Label>Ảnh đại diện</Label>
 
-                <LimitDisplay
-                  used={username.length}
-                  limit={PROFILE_USERNAME_MAX}
-                />
-              </div>
+            <ImagePicker
+              src={profileImageSrc}
+              image={profileImageFile}
+              height={50}
+              width={50}
+              onSrcChange={setProfileImageSrc}
+              onImageChange={setProfileImageFile}
+            />
+          </div>
 
-              <div className="space-y-1">
-                <Label>Profile Image</Label>
+          <div className="space-y-1">
+            <Label>Tên dùng khi chat</Label>
 
-                <ImagePicker
-                  src={profileImageSrc}
-                  image={profileImageFile}
-                  height={50}
-                  width={50}
-                  onSrcChange={setProfileImageSrc}
-                  onImageChange={setProfileImageFile}
-                />
-              </div>
+            <Input
+              placeholder="Chat display name ..."
+              value={displayName}
+              onChange={e => setDisplayName(e.target.value)}
+              maxLength={PROFILE_DISPLAY_NAME_MAX}
+            />
+          </div>
 
-              <div className="space-y-1">
-                <Label>Chat Display Name</Label>
+          <div className="space-y-1">
+            <Label className="text-sm">
+              Bạn muốn tôi biết những gì về bạn để có thể đưa ra phản hồi tốt
+              hơn?
+            </Label>
 
-                <Input
-                  placeholder="Chat display name..."
-                  value={displayName}
-                  onChange={e => setDisplayName(e.target.value)}
-                  maxLength={PROFILE_DISPLAY_NAME_MAX}
-                />
-              </div>
+            <TextareaAutosize
+              value={profileInstructions}
+              onValueChange={setProfileInstructions}
+              placeholder="Thông tin thêm về bạn.. (không bắt buộc)"
+              minRows={6}
+              maxRows={10}
+            />
 
-              <div className="space-y-1">
-                <Label className="text-sm">
-                  What would you like the AI to know about you to provide better
-                  responses?
-                </Label>
-
-                <TextareaAutosize
-                  value={profileInstructions}
-                  onValueChange={setProfileInstructions}
-                  placeholder="Profile context... (optional)"
-                  minRows={6}
-                  maxRows={10}
-                />
-
-                <LimitDisplay
-                  used={profileInstructions.length}
-                  limit={PROFILE_CONTEXT_MAX}
-                />
-              </div>
-            </TabsContent>
+            <LimitDisplay
+              used={profileInstructions.length}
+              limit={PROFILE_CONTEXT_MAX}
+            />
+          </div>
+          {/* </TabsContent>
 
             <TabsContent className="mt-4 space-y-4" value="keys">
               <div className="mt-5 space-y-2">
@@ -724,7 +721,7 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
                 )}
               </div>
             </TabsContent>
-          </Tabs>
+          </Tabs> */}
         </div>
 
         <div className="mt-6 flex items-center">
@@ -734,7 +731,8 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
             <WithTooltip
               display={
                 <div>
-                  Download Chatbot UI 1.0 data as JSON. Import coming soon!
+                  Tải dữ liệu Kế Toán AI 1.0 dưới dạng JSON. Chức năng nhập dữ
+                  liệu sẽ sớm được cung cấp!
                 </div>
               }
               trigger={
@@ -749,11 +747,11 @@ export const ProfileSettings: FC<ProfileSettingsProps> = ({}) => {
 
           <div className="ml-auto space-x-2">
             <Button variant="ghost" onClick={() => setIsOpen(false)}>
-              Cancel
+              Bỏ qua
             </Button>
 
             <Button ref={buttonRef} onClick={handleSave}>
-              Save
+              Lưu
             </Button>
           </div>
         </div>

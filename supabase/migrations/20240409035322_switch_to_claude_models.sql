@@ -1,55 +1,3 @@
--- WORKSPACES
-
-UPDATE workspaces
-SET default_model = 'gpt-4-turbo-preview'
-WHERE default_model = 'claude-3-haiku-20240307';
-
-UPDATE workspaces
-SET default_model = 'gpt-3.5-turbo'
-WHERE default_model = 'gpt-3.5-turbo-1106';
-
--- PRESETS
-
-UPDATE presets
-SET model = 'gpt-4-turbo-preview'
-WHERE model = 'claude-3-haiku-20240307';
-
-UPDATE presets
-SET model = 'gpt-3.5-turbo'
-WHERE model = 'gpt-3.5-turbo-1106';
-
--- ASSISTANTS
-
-UPDATE assistants
-SET model = 'gpt-4-turbo-preview'
-WHERE model = 'claude-3-haiku-20240307';
-
-UPDATE assistants
-SET model = 'gpt-3.5-turbo'
-WHERE model = 'gpt-3.5-turbo-1106';
-
--- CHATS
-
-UPDATE chats
-SET model = 'gpt-4-turbo-preview'
-WHERE model = 'claude-3-haiku-20240307';
-
-UPDATE chats
-SET model = 'gpt-3.5-turbo'
-WHERE model = 'gpt-3.5-turbo-1106';
-
--- MESSAGES
-
-UPDATE messages
-SET model = 'gpt-4-turbo-preview'
-WHERE model = 'claude-3-haiku-20240307';
-
-UPDATE messages
-SET model = 'gpt-3.5-turbo'
-WHERE model = 'gpt-3.5-turbo-1106';
-
--- PROFILES
-
 CREATE OR REPLACE FUNCTION create_profile_and_workspace() 
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -91,12 +39,12 @@ BEGIN
     VALUES(
         NEW.id,
         TRUE,
-        'Home',
+        'Cá nhân',
         4096,
         'claude-3-haiku-20240307', -- Updated default model
-        'You are a friendly, helpful, expert assistant about Vietnam accounting and tax. Your name is Kế Toán AI. You can help on accounting problems, tax questions, specifically in Vietnam. You only answer in Vietnamese. Your answer should not too long, but should be enough and provide correct information.',
-        0.5,
-        'My home workspace.',
+        'You are a friendly, helpful, expert assistant about Vietnam accounting and tax. Your name is Kế Toán AI. You can help on accounting problems, tax questions, specifically in Vietnam. You only answer in Vietnamese. Your answer should not too long, but should be enough and correct.',
+        0.3,
+        'Không gian cá nhân.',
         'openai',
         TRUE,
         TRUE,

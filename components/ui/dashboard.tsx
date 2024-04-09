@@ -107,7 +107,7 @@ export const Dashboard: FC<DashboardProps> = ({ children }) => {
       >
         {isDragging ? (
           <div className="flex h-full items-center justify-center bg-black/50 text-2xl text-white">
-            drop file here
+            thả file vào đây
           </div>
         ) : (
           children
